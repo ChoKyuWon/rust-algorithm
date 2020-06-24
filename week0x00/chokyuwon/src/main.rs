@@ -23,7 +23,22 @@ impl LinkedList{
             data: _data,
             next: None,
         };
-        self.next = Option::Some(Box::<LinkedList>::new(newnode));
+        let mut cur = self;
+        while cur.next.is_some(){
+            cur = cur.next.as_mut().unwrap().as_mut();
+        }
+        cur.next = Option::Some(Box::<LinkedList>::new(newnode));
+    }
+    fn print(&mut self){
+        let mut cur = self;
+        loop {
+            println!("{} ", cur.data);
+            cur = cur.next.as_mut().unwrap().as_mut();
+            if !cur.next.is_some(){
+                println!("{} ", cur.data);
+                break;
+            }
+        }
     }
     // fn push_arbitary(&self, data:u32, position:u32){}
     // fn read(&self, position:u32){}
@@ -31,10 +46,14 @@ impl LinkedList{
 }
 
 fn main() {
-    let mut head = LinkedList{
+    let mut head = Box::new(LinkedList{
         data: 8,
         next: None,
-    };
+    });
     head.push_back(10);
-    println!("{}, {}", head.data, head.next.unwrap().data);
+    head.push_back(20);
+    head.push_back(30);
+    head.push_back(50);
+    head.print();
+    //println!("{}, {}", head.data, head.next.unwrap().data);
 }
