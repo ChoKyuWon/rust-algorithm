@@ -1,16 +1,5 @@
-// enum NextNode{
-//     Node(Box<LinkedList>),
-//     Nil,
-// }
-// impl NextNode{
-//     fn node(&self){
-//         /*
-//         match(self){
-//             Nil => 0,
-//             Node => Node.Box::<LinkedList>.data,
-//         }*/
-//     }
-// }
+use std::borrow::Borrow;
+use std::ops::Deref;
 
 struct LinkedList{
     data:u32,
@@ -29,6 +18,34 @@ impl LinkedList{
         }
         cur.next = Option::Some(Box::<LinkedList>::new(newnode));
     }
+    /*
+    fn push_arbitary(&mut self, _data:u32, position:u32){
+        let mut cur = self;
+        for _i in (0..position){
+            if cur.next.is_some() == false{
+                panic!("OOB");
+            }
+            cur = cur.next.as_mut().unwrap().as_mut();
+        }
+        let newnode = LinkedList{
+            data: _data,
+            //next: Option::Some(Box::<LinkedList>::new(cur.next.as_ref().unwrap().as_ref())),
+            next : cur.next,
+        };
+        cur.next = Option::Some(Box::<LinkedList>::new(newnode));
+    }
+    */
+    fn read(&mut self, position:u32)->u32{
+        let mut cur = self;
+        for _i in (0..position){
+            if cur.next.is_some() == false{
+                panic!("OOB");
+            }
+            cur = cur.next.as_mut().unwrap().as_mut();
+        }
+        return cur.data;
+    }
+    // fn del(&self, position:u32){}
     fn print(&mut self){
         let mut cur = self;
         loop {
@@ -40,9 +57,6 @@ impl LinkedList{
             }
         }
     }
-    // fn push_arbitary(&self, data:u32, position:u32){}
-    // fn read(&self, position:u32){}
-    // fn del(&self, position:u32){}
 }
 
 fn main() {
@@ -55,5 +69,6 @@ fn main() {
     head.push_back(30);
     head.push_back(50);
     head.print();
-    //println!("{}, {}", head.data, head.next.unwrap().data);
+    println!("{}, {}", head.read(0), head.read(1));
+    head.print();
 }
