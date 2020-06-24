@@ -30,6 +30,7 @@ impl LinkedList{
         }
         let newnode = LinkedList{
             data: _data,
+            // TODO
             //next: Option::Some(Box::<LinkedList>::new(cur.next.as_ref().unwrap().as_ref())),
             //next : cur.next,
             next:None,
@@ -46,6 +47,7 @@ impl LinkedList{
         }
         return cur.data;
     }
+    // TODO
     // fn del(&self, position:u32){}
     fn print(&mut self){
         let mut cur = self;
