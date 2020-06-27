@@ -1,3 +1,5 @@
+use std::mem;
+
 #[derive(Clone)]
 struct LinkedList<T>{
     data:T,
@@ -21,18 +23,6 @@ impl<T> LinkedList<T>{
             self.push_back(_data);
             return;
         }
-        if position == 0{
-            /*
-            let newnode = LinkedList{
-                data: _data,
-                // TODO
-                next : Option::Some(Box::new(*self)),
-                //next:None,
-            };
-            *self = newnode;
-            return;
-            */
-        }
         let mut cur = self;
         for _i in 0..position-1{
             if cur.next.is_some() == false{
@@ -40,10 +30,13 @@ impl<T> LinkedList<T>{
             }
             cur = cur.next.as_mut().unwrap().as_mut();
         }
-        let newnode = LinkedList{
+        let mut newnode = LinkedList{
             data: _data,
             next : cur.next.take(),
         };
+        if position == 0{
+            mem::swap(&mut cur.data, &mut newnode.data);
+        }
         cur.next = Option::Some(Box::<LinkedList<T>>::new(newnode));
     }
     fn read(&mut self, position:u32)->&T{
@@ -96,7 +89,7 @@ fn main() {
     head.push(15, -1);
     head.push(-100, 1);
     head.push_back(50);
-    head.push(0,1);
+    head.push(1,0);
     let v = head.as_vec();
     println!("{:?}", v);
     head.delete(1);
@@ -114,6 +107,7 @@ fn main() {
     let v = strlist.as_vec();
     println!("{:?}", v);
     strlist.delete(2);
+    strlist.push("alomost done", 0);
     let v = strlist.as_vec();
     println!("{:?}", v);
 }
