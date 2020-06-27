@@ -153,8 +153,6 @@ impl LinkedList{
         }
         let newnode = LinkedList{
             data: _data,
-            // TODO
-            //next: Option::Some(Box::from_raw(Box::into_raw(cur.next.as_ref().unwrap().as_ref()))),
             next : cur.next.take(),
         };
         cur.next = Option::Some(Box::<LinkedList>::new(newnode));
@@ -182,12 +180,11 @@ impl LinkedList{
     }
     // fn delete_all(&mut self, data:i32){}
     // fn find(&mut self, data:i32)->u32{return 0;}
-    fn print(&mut self)->Vec<i32>{
+    fn as_vec(&mut self)->Vec<i32>{
         let mut cur = self;
         let mut v = Vec::new();
         loop {
             v.push(cur.data);
-            //println!("{} ", cur.data);
             if !cur.next.is_some(){
                 break;
             }
@@ -211,10 +208,10 @@ fn main() {
     head.push(-100, 1);
     head.push_back(50);
     head.push(0,1);
-    let mut v = head.print();
+    let mut v = head.as_vec();
     println!("{:?}", v);
     head.delete(1);
-    v = head.print();
+    v = head.as_vec();
     println!("{:?}", v);
     println!("{}", head.read(5));
 }
