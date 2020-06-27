@@ -42,8 +42,6 @@ impl<T> LinkedList<T>{
         }
         let newnode = LinkedList{
             data: _data,
-            // TODO
-            //next: Option::Some(Box::from_raw(Box::into_raw(cur.next.as_ref().unwrap().as_ref()))),
             next : cur.next.take(),
         };
         cur.next = Option::Some(Box::<LinkedList<T>>::new(newnode));
@@ -69,14 +67,13 @@ impl<T> LinkedList<T>{
         let drop = cur.next.as_mut().unwrap().as_mut();
         cur.next = drop.next.take();
     }
-    fn delete_all(&mut self, data:i32){}
-    fn find(&mut self, data:i32)->u32{return 0;}
+    // fn delete_all(&mut self, data:i32){}
+    // fn find(&mut self, data:i32)->u32{return 0;}
     fn as_vec(&mut self)->Vec<&T>{
         let mut cur = self;
         let mut v = Vec::new();
         loop {
             v.push(&cur.data);
-            //println!("{} ", cur.data);
             if !cur.next.is_some(){
                 break;
             }
@@ -89,10 +86,10 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
-    let mut head = Box::new(LinkedList{
+    let mut head = LinkedList{
         data: 8,
         next: None,
-    });
+    };
     head.push_back(10);
     head.push_back(20);
     head.push_back(30);
@@ -106,12 +103,17 @@ fn main() {
     let v = head.as_vec();
     println!("{:?}", v);
 
-    let mut strlist = Box::new(LinkedList{
+    println!("{}", head.read(3));
+
+    let mut strlist = LinkedList{
         data: "this",
         next: None,
-    });
+    };
     strlist.push_back("is");
     strlist.push_back("a");
+    let v = strlist.as_vec();
+    println!("{:?}", v);
+    strlist.delete(2);
     let v = strlist.as_vec();
     println!("{:?}", v);
 }
