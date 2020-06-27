@@ -1,3 +1,5 @@
+use std::mem;
+
 #[derive(Clone)]
 struct LinkedList{
     data:i32,
@@ -22,6 +24,7 @@ impl LinkedList{
             return;
         }
         if position == 0{
+            /*
             let newnode = LinkedList{
                 data: _data,
                 // TODO
@@ -30,6 +33,7 @@ impl LinkedList{
             };
             *self = newnode;
             return;
+            */
         }
         let mut cur = self;
         for _i in 0..position-1{
@@ -57,7 +61,17 @@ impl LinkedList{
         return cur.data;
     }
     // TODO
-    // fn del(&self, position:u32){}
+    fn del(&mut self, position:u32){
+        let mut cur = self;
+        for _i in 0..position-1{
+            if cur.next.is_some() == false{
+                panic!("OOB");
+            }
+            cur = cur.next.as_mut().unwrap().as_mut();
+        }
+        let mut drop = cur.next.as_mut().unwrap().as_mut();
+        cur.next = drop.next.take();
+    }
     fn print(&mut self){
         let mut cur = self;
         loop {
@@ -85,7 +99,7 @@ fn main() {
     head.push_back(50);
     head.push(0,1);
     head.print();
-    head.push(100,0);
     println!("-----------------");
+    head.del(1);
     head.print();
 }
