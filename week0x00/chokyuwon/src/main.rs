@@ -1,3 +1,4 @@
+use std::convert::TryInto;
 struct LinkedList<T>{
     len:u32,
     node: Option<Box<Node<T>>>,
@@ -27,6 +28,9 @@ impl<T> LinkedList<T>{
             self.push_back(_data);
             return;
         }
+        if self.len - 1 < position.try_into().unwrap(){
+            panic!("OOB");
+        }
         self.len += 1;
         if position == 0{
             let newnode = Node{
@@ -38,9 +42,6 @@ impl<T> LinkedList<T>{
         }
         let mut cur = self.node.as_mut().unwrap().as_mut();
         for _i in 0..position-1{
-            if cur.next.is_some() == false{
-                panic!("OOB");
-            }
             cur = cur.next.as_mut().unwrap().as_mut();
         }
         let newnode = Node{
@@ -50,30 +51,30 @@ impl<T> LinkedList<T>{
         cur.next = Option::Some(Box::<Node<T>>::new(newnode));
     }
     fn read(&mut self, position:u32)->&T{
+        if self.len - 1 < position{
+            panic!("OOB");
+        }
         let mut cur = self.node.as_mut().unwrap().as_mut();
         for _i in 0..position{
-            if cur.next.is_some() == false{
-                panic!("OOB");
-            }
             cur = cur.next.as_mut().unwrap().as_mut();
         }
         return &cur.data;
     }
     fn delete(&mut self, position:u32){
+        if self.len - 1 < position{
+            panic!("OOB");
+        }
+        self.len -= 1;
         if position == 0{
             self.node = self.node.as_mut().unwrap().as_mut().next.take();
             return;
         }
         let mut cur = self.node.as_mut().unwrap().as_mut();
         for _i in 0..position-1{
-            if cur.next.is_some() == false{
-                panic!("OOB");
-            }
             cur = cur.next.as_mut().unwrap().as_mut();
         }
         let drop = cur.next.as_mut().unwrap().as_mut();
         cur.next = drop.next.take();
-        self.len -= 1;
     }
     // fn delete_all(&mut self, data:i32){}
     // fn find(&mut self, data:i32)->u32{return 0;}
@@ -115,8 +116,8 @@ fn main() {
     let v = head.as_vec();
     println!("{:?}", v);
 
-    println!("{}", head.read(3));
     println!("{}", head.len);
+    println!("{}", head.read(6));
     /*
     let mut strlist = Node{
         data: "this",
