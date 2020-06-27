@@ -1,14 +1,14 @@
 use std::mem;
 
 #[derive(Clone)]
-struct LinkedList<T>{
+struct Node<T>{
     data:T,
-    next: Option<Box<LinkedList<T>>>
+    next: Option<Box<Node<T>>>
 }
 
-impl<T> LinkedList<T>{
+impl<T> Node<T>{
     fn push_back(&mut self, _data:T){
-        let newnode = LinkedList{
+        let newnode = Node{
             data: _data,
             next: None,
         };
@@ -16,7 +16,7 @@ impl<T> LinkedList<T>{
         while cur.next.is_some(){
             cur = cur.next.as_mut().unwrap().as_mut();
         }
-        cur.next = Option::Some(Box::<LinkedList<T>>::new(newnode));
+        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
     }
     fn push(&mut self, _data:T, position:i32){
         if position < 0{
@@ -30,14 +30,14 @@ impl<T> LinkedList<T>{
             }
             cur = cur.next.as_mut().unwrap().as_mut();
         }
-        let mut newnode = LinkedList{
+        let mut newnode = Node{
             data: _data,
             next : cur.next.take(),
         };
         if position == 0{
             mem::swap(&mut cur.data, &mut newnode.data);
         }
-        cur.next = Option::Some(Box::<LinkedList<T>>::new(newnode));
+        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
     }
     fn read(&mut self, position:u32)->&T{
         let mut cur = self;
@@ -79,7 +79,7 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
-    let mut head = LinkedList{
+    let mut head = Node{
         data: 8,
         next: None,
     };
@@ -97,8 +97,7 @@ fn main() {
     println!("{:?}", v);
 
     println!("{}", head.read(3));
-
-    let mut strlist = LinkedList{
+    let mut strlist = Node{
         data: "this",
         next: None,
     };
