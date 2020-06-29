@@ -32,7 +32,7 @@ impl<T> LinkedList<T>{
         while cur.next.is_some(){
             cur = cur.next.as_mut().unwrap().as_mut();
         }
-        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
+        cur.next = Option::Some(Box::new(newnode));
         self.len += 1;
     }
     
@@ -61,7 +61,7 @@ impl<T> LinkedList<T>{
             data: _data,
             next : cur.next.take(),
         };
-        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
+        cur.next = Option::Some(Box::new(newnode));
     }
     fn read(&mut self, position:u32)->&T{
         if self.len - 1 < position{
