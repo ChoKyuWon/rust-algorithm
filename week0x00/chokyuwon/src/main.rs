@@ -8,8 +8,21 @@ struct Node<T>{
     data:T,
     next: Option<Box<Node<T>>>
 }
-
+impl <T> Node<T>{
+    fn new(_data:T)->Node<T>{
+        Node{
+            data:_data,
+            next:None,
+        }
+    }
+}
 impl<T> LinkedList<T>{
+    fn new(_data:T)->LinkedList<T>{
+        LinkedList{
+            len:1,
+            node:Some(Box::new(Node::new(_data))),
+        }
+    }
     fn push_back(&mut self, _data:T){
         let newnode = Node{
             data: _data,
@@ -95,13 +108,8 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
-    let mut head = LinkedList{
-        len:1,
-        node: Some(Box::new(Node{
-            data: 8,
-            next: None,
-        })),
-    };
+    
+    let mut head = LinkedList::new(8);
     head.push_back(10);
     head.push_back(20);
     head.push_back(30);
