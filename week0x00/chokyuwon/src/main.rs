@@ -108,36 +108,11 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
-    
-    let mut head = LinkedList::new(8);
-    head.push_back(10);
-    head.push_back(20);
-    head.push_back(30);
-
-    head.push(15, -1);
-    head.push(-100, 1);
-    head.push_back(50);
-    head.push(1,0);
+    let s = String::from("hey");
+    let mut head = LinkedList::new(s);
+    let s2 = String::from("somebody");
+    head.push_back(s2);
     let v = head.as_vec();
     println!("{:?}", v);
-    head.delete(0);
-    let v = head.as_vec();
-    println!("{:?}", v);
-
-    println!("{}", head.len);
-    println!("{}", head.read(6));
-    /*
-    let mut strlist = Node{
-        data: "this",
-        next: None,
-    };
-    strlist.push_back("is");
-    strlist.push_back("a");
-    let v = strlist.as_vec();
-    println!("{:?}", v);
-    strlist.delete(2);
-    strlist.push("alomost done", 0);
-    let v = strlist.as_vec();
-    println!("{:?}", v);
-    */
+    // println!("{}", s);
 }
