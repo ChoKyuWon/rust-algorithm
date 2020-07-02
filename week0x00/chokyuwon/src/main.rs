@@ -1,4 +1,6 @@
 use std::convert::TryInto;
+use std::cmp::PartialEq;
+
 struct LinkedList<T>{
     len:u32,
     node: Option<Box<Node<T>>>,
@@ -6,7 +8,7 @@ struct LinkedList<T>{
 
 struct Node<T>{
     data:T,
-    next: Option<Box<Node<T>>>
+    next: Option<Box<Node<T>>>,
 }
 impl <T> Node<T>{
     fn new(_data:T)->Node<T>{
@@ -16,7 +18,7 @@ impl <T> Node<T>{
         }
     }
 }
-impl<T> LinkedList<T>{
+impl<T:PartialEq> LinkedList<T>{
     fn new(_data:T)->LinkedList<T>{
         LinkedList{
             len:1,
@@ -75,6 +77,7 @@ impl<T> LinkedList<T>{
     }
     fn delete(&mut self, position:u32){
         if self.len - 1 < position{
+            println!("{}", position);
             panic!("OOB");
         }
         self.len -= 1;
@@ -89,8 +92,45 @@ impl<T> LinkedList<T>{
         let drop = cur.next.as_mut().unwrap().as_mut();
         cur.next = drop.next.take();
     }
-    // fn delete_all(&mut self, data:i32){}
-    // fn find(&mut self, data:i32)->u32{return 0;}
+    //#TODO
+    fn delete_all(&mut self, _data:T){
+        let v = self.find_all(_data);
+        let mut num = 0;
+        for index in v{
+            self.delete(index - num);
+            num += 1;
+        }
+    }
+
+    fn find_one(&mut self, _data:T)->i32{
+        let mut cur = self.node.as_mut().unwrap().as_mut();
+        let mut index = 0;
+        loop{
+            if cur.data==_data{
+                return index;
+            }
+            if !cur.next.is_some(){
+                return -1;
+            }
+            cur = cur.next.as_mut().unwrap().as_mut();
+            index += 1;
+        }
+    }
+    fn find_all(&mut self, _data:T)->Vec<u32>{
+        let mut cur = self.node.as_mut().unwrap().as_mut();
+        let mut index = 0;
+        let mut v = Vec::new();
+        loop{
+            if cur.data==_data{
+                v.push(index);
+            }
+            if !cur.next.is_some(){
+                return v;
+            }
+            cur = cur.next.as_mut().unwrap().as_mut();
+            index += 1;
+        }
+    }
     fn as_vec(&mut self)->Vec<&T>{
         let mut cur = self.node.as_mut().unwrap().as_mut();
         let mut v = Vec::new();
@@ -108,11 +148,26 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
-    let s = String::from("hey");
-    let mut head = LinkedList::new(s);
-    let s2 = String::from("somebody");
-    head.push_back(s2);
+    test();
+}
+
+fn test(){
+    let mut head = LinkedList::new(8);
+    head.push_back(10);
+    head.push_back(20);
+    head.push_back(30);
+
+    head.push(15, -1);
+    head.push(-100, 1);
+    head.push_back(50);
+    head.push(1,0);
+    head.push_back(15);
     let v = head.as_vec();
     println!("{:?}", v);
-    // println!("{}", s);
+    head.delete(0);
+    head.push_back(15);
+    let v = head.as_vec();
+    println!("{:?}", v);
+    head.delete_all(15);
+    println!("{:?}", head.as_vec());
 }
