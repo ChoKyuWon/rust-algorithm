@@ -6,7 +6,7 @@ struct LinkedList<T>{
 
 struct Node<T>{
     data:T,
-    next: Option<Box<Node<T>>>
+    next: Option<Box<Node<T>>>,
 }
 
 impl<T> LinkedList<T>{
@@ -95,6 +95,10 @@ impl<T> LinkedList<T>{
 }
 
 fn main() {
+    test();
+}
+
+fn test(){
     let mut head = LinkedList{
         len:1,
         node: Some(Box::new(Node{
