@@ -8,8 +8,21 @@ struct Node<T>{
     data:T,
     next: Option<Box<Node<T>>>,
 }
-
+impl <T> Node<T>{
+    fn new(_data:T)->Node<T>{
+        Node{
+            data:_data,
+            next:None,
+        }
+    }
+}
 impl<T> LinkedList<T>{
+    fn new(_data:T)->LinkedList<T>{
+        LinkedList{
+            len:1,
+            node:Some(Box::new(Node::new(_data))),
+        }
+    }
     fn push_back(&mut self, _data:T){
         let newnode = Node{
             data: _data,
@@ -19,7 +32,7 @@ impl<T> LinkedList<T>{
         while cur.next.is_some(){
             cur = cur.next.as_mut().unwrap().as_mut();
         }
-        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
+        cur.next = Option::Some(Box::new(newnode));
         self.len += 1;
     }
     
@@ -48,7 +61,7 @@ impl<T> LinkedList<T>{
             data: _data,
             next : cur.next.take(),
         };
-        cur.next = Option::Some(Box::<Node<T>>::new(newnode));
+        cur.next = Option::Some(Box::new(newnode));
     }
     fn read(&mut self, position:u32)->&T{
         if self.len - 1 < position{
@@ -119,21 +132,5 @@ fn test(){
     head.delete(0);
     let v = head.as_vec();
     println!("{:?}", v);
-
-    println!("{}", head.len);
-    println!("{}", head.read(6));
-    /*
-    let mut strlist = Node{
-        data: "this",
-        next: None,
-    };
-    strlist.push_back("is");
-    strlist.push_back("a");
-    let v = strlist.as_vec();
-    println!("{:?}", v);
-    strlist.delete(2);
-    strlist.push("alomost done", 0);
-    let v = strlist.as_vec();
-    println!("{:?}", v);
-    */
+    // println!("{}", s);
 }
